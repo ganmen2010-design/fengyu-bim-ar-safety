@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BIM結合XR技術導入營造工地安全衛生管理 - 豐譽營造示範成果報告</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/night.css" />
+  <!-- WordCloud2 -->
+  <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.min.js"></script>
+
+  <style>
+    /* === 全域變數與主題調色盤 === */
+    :root {
+      --accent:  #e8643a;   /* 活力橘紅 */
+      --accent2: #4fc3f7;   /* 科技青藍 */
+      --success: #81c784;   /* 合規綠 */
+      --warn:    #ffb74d;   /* 警示琥珀 */
+      --bg-dark: #0d1117;   /* 深夜底色 */
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.12);
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: #e6edf3;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+    }
+
+    .reveal {
+      font-size: 26px;
+    }
+
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: inherit;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      text-transform: none;
+    }
+
+    .reveal h1 { font-size: 1.85em; color: #fff; line-height: 1.25; }
+    .reveal h2 { font-size: 1.35em; color: var(--accent2); margin-bottom: 0.5em; }
+    .reveal h3 { font-size: 1.05em; color: #fff; }
+
+    /* === 標籤與徽章 === */
+    .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent), #ff7849);
+      color: #fff;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 0.6em;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.8em;
+      box-shadow: 0 4px 15px rgba(232, 100, 58, 0.4);
+    }
+
+    .badge-sub {
+      display: inline-block;
+      background: rgba(79, 195, 247, 0.15);
+      border: 1px solid rgba(79, 195, 247, 0.4);
+      color: var(--accent2);
+      padding: 3px 12px;
+      border-radius: 12px;
+      font-size: 0.55em;
+      font-weight: 600;
+    }
+
+    /* === 封面樣式 === */
+    .title-box {
+      text-align: center;
+      padding: 30px;
+      background: radial-gradient(circle at center, rgba(79, 195, 247, 0.08) 0%, transparent 70%);
+    }
+
+    .title-meta {
+      margin-top: 1.6em;
+      font-size: 0.65em;
+      color: #8b949e;
+      line-height: 1.8;
+    }
+
+    /* === 統計數據卡 === */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 1em;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px 12px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent2);
+    }
+
+    .stat-card .num {
+      font-size: 1.9em;
+      font-weight: 800;
+      color: var(--accent2);
+      line-height: 1.1;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .stat-card .num.highlight {
+      color: var(--accent);
+      text-shadow: 0 0 12px rgba(232, 100, 58, 0.5);
+    }
+
+    .stat-card .num.success {
+      color: var(--success);
+      text-shadow: 0 0 12px rgba(129, 199, 132, 0.5);
+    }
+
+    .stat-card .label {
+      font-size: 0.5em;
+      color: #c9d1d9;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    /* === 卡片網格（優勢、參數、QA） === */
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin-top: 0.8em;
+      text-align: left;
+    }
+
+    .card-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 0.8em;
+      text-align: left;
+    }
+
+    .tech-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      border-top: 4px solid var(--accent2);
+      padding: 18px 20px;
+      font-size: 0.62em;
+      line-height: 1.6;
+    }
+
+    .tech-card.accent { border-top-color: var(--accent); }
+    .tech-card.warn { border-top-color: var(--warn); }
+    .tech-card.success { border-top-color: var(--success); }
+
+    .tech-card h4 {
+      font-size: 1.15em;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .tech-card ul {
+      margin: 0;
+      padding-left: 18px;
+      color: #c9d1d9;
+    }
+
+    .tech-card li {
+      margin-bottom: 5px;
+    }
+
+    /* === 滑桿對比演示 (VIZ) === */
+    .viz-container {
+      position: relative;
+      width: 860px;
+      height: 380px;
+      margin: 0 auto;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      background: #000;
+    }
+
+    .viz-layer {
+      position: absolute;
+      inset: 0;
+      padding: 24px 30px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: left;
+      font-size: 0.68em;
+    }
+
+    .viz-before {
+      background: linear-gradient(135deg, #1f1b24, #121016);
+      color: #ff9f7f;
+    }
+
+    .viz-after {
+      background: linear-gradient(135deg, #091e2b, #061520);
+      color: #7ee7fc;
+    }
+
+    .viz-divider {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 100%;
+      background: #4fc3f7;
+      box-shadow: 0 0 14px #4fc3f7;
+      cursor: ew-resize;
+      pointer-events: none;
+    }
+
+    .viz-slider {
+      width: 860px;
+      margin-top: 14px;
+      accent-color: var(--accent2);
+    }
+
+    .tag-before {
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      background: rgba(232, 100, 58, 0.25);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.75em;
+    }
+
+    .tag-after {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      background: rgba(79, 195, 247, 0.25);
+      border: 1px solid var(--accent2);
+      color: var(--accent2);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.75em;
+    }
+
+    /* === 專家 QA 卡 === */
+    .qa-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 20px 24px;
+      text-align: left;
+      margin-top: 0.8em;
+    }
+
+    .qa-q {
+      font-size: 0.8em;
+      font-weight: 700;
+      color: var(--warn);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .qa-q-tag {
+      background: var(--warn);
+      color: #0d1117;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.8em;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .qa-a {
+      font-size: 0.62em;
+      color: #e6edf3;
+      line-height: 1.7;
+      padding-left: 36px;
+    }
+
+    .qa-a ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .qa-a li {
+      margin-bottom: 6px;
+    }
+
+    .qa-highlight {
+      color: var(--accent2);
+      font-weight: 700;
+    }
+
+    /* === 脈衝動畫 === */
+    @keyframes livePulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.96); }
+    }
+
+    .live-badge {
+      display: inline-block;
+      background: #ff4757;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.75em;
+      font-weight: 800;
+      animation: livePulse 1.6s infinite;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="reveal">
+  <div class="slides">
+
+    <!-- Slide 1: 封面 -->
+    <section data-background-image="images/cover.jpg" data-background-opacity="0.28" data-background-size="cover">
+      <div class="title-box">
+        <div class="badge">勞動部勞研所委辦計畫 · 案號 1150041</div>
+        <h1>建築資訊模型 (BIM) 結合 XR 技術<br><span style="color:var(--accent2)">導入營造工地安全衛生管理</span></h1>
+        <h3 style="color:var(--accent); margin-top:0.4em; font-size:1.15em;">示範案場實務應用與成效報告 · 豐譽營造代表案例</h3>
+        <div class="title-meta">
+          <strong>示範案場</strong>：國立屏科實驗高級中等學校校舍新建工程<br>
+          <strong>報告單位</strong>：豐譽營造股份有限公司（品保 / 職安 / 數位創新 / BIM中心）<br>
+          <strong>座談期程</strong>：民國 115 年 11 月 20 日（第二場次專家座談會）
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 2: 互動文字雲 -->
+    <section id="slide-wordcloud">
+      <h2>現場安衛巡檢最大痛點是什麼？ <span class="live-badge">LIVE 即時互動</span></h2>
+      <p style="font-size:0.55em; color:#8b949e; margin-top:-0.3em;">請與會專家與長官以手機掃碼輸入關鍵字，大螢幕即時呈現</p>
+      
+      <div style="display:grid; grid-template-columns:280px 1fr; gap:16px; height:430px; margin-top:0.6em;">
+        <!-- 左欄：輸入與熱門榜 -->
+        <div style="display:flex; flex-direction:column; gap:10px; text-align:left;">
+          <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px;">
+            <div style="font-size:0.55em; color:var(--accent2); font-weight:700; margin-bottom:6px;">填寫痛點關鍵詞</div>
+            <input id="wc-input" type="text" placeholder="例：忘記法規、打報告耗時…" maxlength="20"
+              style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid rgba(79,195,247,0.3); background:rgba(255,255,255,0.08); color:#fff; font-size:14px; box-sizing:border-box; outline:none;" />
+            <button id="wc-btn"
+              style="width:100%; margin-top:8px; padding:9px; background:var(--accent2); color:#0d1117; border:none; border-radius:6px; font-weight:700; font-size:14px; cursor:pointer;">
+              送出痛點 ↵
+            </button>
+          </div>
+          <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:12px; flex:1; overflow:hidden; display:flex; flex-direction:column;">
+            <div style="font-size:0.55em; color:var(--accent2); font-weight:700; margin-bottom:6px;">即時統計反饋</div>
+            <div id="wc-list" style="font-size:0.48em; overflow-y:auto; flex:1; color:#ccc;"></div>
+            <div style="margin-top:6px; font-size:0.45em; color:#888; border-top:1px solid rgba(255,255,255,0.1); padding-top:4px;">
+              總提報：<span id="wc-total" style="color:var(--accent); font-weight:700;">0</span> 則　
+              獨立關鍵詞：<span id="wc-unique" style="color:var(--accent2); font-weight:700;">0</span> 個
+            </div>
+          </div>
+        </div>
+
+        <!-- 右欄：文字雲畫布 -->
+        <div style="background:rgba(255,255,255,0.03); border-radius:12px; overflow:hidden; position:relative; border:1px solid var(--card-border);">
+          <canvas id="wc-canvas" style="width:100%; height:100%; display:block;"></canvas>
+          <div id="wc-empty" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); color:#666; font-size:0.65em; text-align:center;">
+            輸入關鍵字，即時文字雲將自動浮現 ✨
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 3: 工程概述與示範場域 -->
+    <section>
+      <h2>壹、工程概述與示範場域定位</h2>
+      <div class="card-grid-3">
+        <div class="tech-card">
+          <h4>🏛️ 工程基本資料</h4>
+          <ul>
+            <li><strong>工程名稱</strong>：國立屏科實中校舍新建工程</li>
+            <li><strong>主辦機關</strong>：國科會南部科學園區管理局</li>
+            <li><strong>專管單位</strong>：中興工程顧問股份有限公司</li>
+            <li><strong>設計監造</strong>：劉木賢建築師事務所</li>
+            <li><strong>承造廠商</strong>：豐譽營造股份有限公司</li>
+          </ul>
+        </div>
+        <div class="tech-card accent">
+          <h4>📐 構造規模與量體</h4>
+          <ul>
+            <li><strong>構造種類</strong>：鋼骨 (SC) + 鋼筋混凝土 (RC) 造</li>
+            <li><strong>樓層規劃</strong>：地上 3 層、地下 1 層，筏式基礎</li>
+            <li><strong>基地面積</strong>：86,089.34 ㎡</li>
+            <li><strong>總樓地板面積</strong>：30,944.62 ㎡</li>
+            <li><strong>建築用途</strong>：高中部教室、宿舍、體育館</li>
+          </ul>
+        </div>
+        <div class="tech-card warn">
+          <h4>🎯 示範場域選定</h4>
+          <ul>
+            <li><strong>試驗分區</strong>：屏科實中高中部 <strong>1FL & 2FL</strong></li>
+            <li><strong>工況特徵</strong>：結構體交接與外牆裝修作業期</li>
+            <li><strong>三大關鍵安衛工項</strong>：
+              <ol style="margin-top:4px; padding-left:16px;">
+                <li>臨時動力用電箱（漏電/架高）</li>
+                <li>外牆施工架（壁連桿/踏板/護欄）</li>
+                <li>樓板與電梯井開口防墜護欄</li>
+              </ol>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 4: VIZ 傳統 vs. BIM-AR 對比 -->
+    <section>
+      <h2>貳、巡檢演進：傳統紙本 vs. BIM-AR 智慧巡檢</h2>
+      <p style="font-size:0.55em; color:#8b949e; margin-top:-0.3em;">請拖動下方滑桿，直觀比對導入前後之工作型態差異</p>
+
+      <div class="viz-container">
+        <!-- 傳統紙本 -->
+        <div class="viz-layer viz-before">
+          <div class="tag-before">傳統紙本作業模式</div>
+          <h3 style="color:#ff7849; font-size:1.3em; margin-bottom:12px;">痛點叢生 · 二次登打耗時</h3>
+          <ul style="line-height:1.9; font-size:0.95em;">
+            <li>❌ <strong>法規死記</strong>：新進同仁背不全 90cm 護欄、壁連桿間距，現場判斷猶豫。</li>
+            <li>❌ <strong>文書冗長</strong>：巡檢完回工務所需花 40~60 分鐘排版照片、繕打日誌。</li>
+            <li>❌ <strong>防弊盲區</strong>：紙本勾選容易流於「辦公室補勾」，無法證實逐點巡查。</li>
+            <li>❌ <strong>單向宣導</strong>：工前會議口頭交代，工班難以體會實際空間墜落危害。</li>
+          </ul>
+        </div>
+
+        <!-- BIM-AR 模式 -->
+        <div id="viz-after-1" class="viz-layer viz-after" style="clip-path:inset(0 50% 0 0);">
+          <div class="tag-after">BIM-AR 虛實巡檢模式</div>
+          <h3 style="color:var(--accent2); font-size:1.3em; margin-bottom:12px;">虛實套疊 · 一鍵現場出表</h3>
+          <ul style="line-height:1.9; font-size:0.95em;">
+            <li>✅ <strong>數位老手</strong>：點選元件即刻呼叫法規圖說與自檢教育解說影片。</li>
+            <li>✅ <strong>一鍵產表</strong>：現場勾選拍照，系統自動生成標準《安衛自主檢查表》，省 40 分鐘。</li>
+            <li>✅ <strong>軌跡防弊</strong>：空間錨定結合停留時間計時，杜絕虛報漏檢。</li>
+            <li>✅ <strong>沉浸宣導</strong>：以 3D 模型向工班直觀演示違規拔桿之墜落風險。</li>
+          </ul>
+        </div>
+
+        <div id="viz-divider-1" class="viz-divider"></div>
+      </div>
+
+      <input id="viz-slider-1" class="viz-slider" type="range" min="0" max="100" value="50" />
+    </section>
+
+    <!-- Slide 5: BIM 安衛元件與參數 -->
+    <section>
+      <h2>參、BIM 安衛元件架構與動態階段過濾</h2>
+      <div class="card-grid-2">
+        <div class="tech-card">
+          <h4>📦 IFC 開放標準格式與 8 大安衛參數</h4>
+          <p>不綁定特定建模軟體，Revit 元件掛載 Shared Parameters 後直轉 IFC：</p>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:8px;">
+            <div style="background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px;">① 元件唯一碼 (ID)</div>
+            <div style="background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px;">② 安衛設施類型 (Type)</div>
+            <div style="background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px;">③ 法規檢核表關聯 (Check)</div>
+            <div style="background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px;">④ 教學影片連結 (Video)</div>
+            <div style="background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px;">⑤ 法規圖說連結 (Image)</div>
+            <div style="background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px;">⑥ 危害預知文本 (Hazard)</div>
+            <div style="background:rgba(255,255,255,0.06); padding:6px 10px; border-radius:6px;">⑦ 責任分包商 (Vendor)</div>
+            <div style="background:rgba(232,100,58,0.25); border:1px solid var(--accent); padding:6px 10px; border-radius:6px; color:#fff; font-weight:700;">⑧ 施工階段 (Phase) ★</div>
+          </div>
+        </div>
+
+        <div class="tech-card accent">
+          <h4>⚡ 亮點：施工階段動態過濾 (Phase Filtering)</h4>
+          <p>依據專家訪談<strong>台積電莊副總</strong>建議落實之關鍵機制：</p>
+          <ul>
+            <li><strong>避免模型資訊超載</strong>：營造現場不同工期安衛設施動態變化，若一次載入全棟模型將導致載具過熱卡頓。</li>
+            <li><strong>進度動態過濾</strong>：
+              <ul>
+                <li><code>Phase = 鋼筋工程</code> ➔ 僅呈現防護帽、預留筋保護套。</li>
+                <li><code>Phase = 模板工程</code> ➔ 開口防護欄、樓梯扶手。</li>
+                <li><code>Phase = 施工架作業</code> ➔ 壁連桿、交叉拉桿、滿鋪踏板。</li>
+              </ul>
+            </li>
+            <li><strong>現場輕量秒載</strong>：當層模型控制在 <strong>≤ 15MB</strong>，模型切換轉檔僅需 10~15 分鐘。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 6: 現場實測錄影解說 -->
+    <section>
+      <h2>肆、核心實證：屏科實中現場預錄操作展示</h2>
+      <p style="font-size:0.55em; color:#8b949e; margin-top:-0.3em;">依范素玲教授會前指示要求：採預錄實測影片（約 3.5 分鐘），零連線風險穩定呈現</p>
+
+      <div class="stat-grid" style="grid-template-columns:repeat(5, 1fr); margin-top:0.8em;">
+        <div class="stat-card">
+          <div class="badge-sub">STEP 1</div>
+          <div class="num" style="font-size:1.4em;">0.65m</div>
+          <div class="label">電箱尺度錨定<br>（≤ 60 秒貼合）</div>
+        </div>
+        <div class="stat-card">
+          <div class="badge-sub">STEP 2</div>
+          <div class="num" style="font-size:1.4em;">用電檢核</div>
+          <div class="label">電箱影片/圖說<br>拍照一鍵存證</div>
+        </div>
+        <div class="stat-card">
+          <div class="badge-sub">STEP 3</div>
+          <div class="num" style="font-size:1.4em;">施工架</div>
+          <div class="label">10項防墜比對<br>壁連桿/踏板檢視</div>
+        </div>
+        <div class="stat-card">
+          <div class="badge-sub">STEP 4</div>
+          <div class="num" style="font-size:1.4em;">跨上 2F</div>
+          <div class="label">垂直樓層穿越<br>完全零漂移</div>
+        </div>
+        <div class="stat-card">
+          <div class="badge-sub">STEP 5</div>
+          <div class="num" style="font-size:1.4em;">匯出日誌</div>
+          <div class="label">停留時間記錄<br>自動生成檢查表</div>
+        </div>
+      </div>
+
+      <div class="tech-card" style="margin-top:16px; text-align:left; background:rgba(79,195,247,0.06); border-color:var(--accent2);">
+        <p style="margin:0; font-size:0.65em; line-height:1.7;">
+          🎬 <strong>操作解說摘要</strong>：工程師於屏科實中 1FL 臨時電箱選取兩端點輸入 0.65m 完成空間校準，虛擬模型與實體完美鎖定；點選電箱即刻檢視法規並拍照存檔；轉向外牆施工架進行虛實透視比對；隨後手持載具直接跨樓層步行至 2FL，<strong>模型持續保持精確空間貼合，無須再次校正</strong>，充分驗證現場工程穩定度。
+        </p>
+      </div>
+    </section>
+
+    <!-- Slide 7: 豐譽實測數據與減負效益 -->
+    <section>
+      <h2>伍、豐譽第一手實測回饋數據與量化減負效益</h2>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="num highlight">&lt; 3 分鐘</div>
+          <div class="label">現場空間錨定耗時</div>
+        </div>
+        <div class="stat-card">
+          <div class="num success">0 漂移</div>
+          <div class="label">前進推進與跨樓層追蹤</div>
+        </div>
+        <div class="stat-card">
+          <div class="num">10-15 分</div>
+          <div class="label">BIM 匯出 IFC 與轉模</div>
+        </div>
+        <div class="stat-card">
+          <div class="num highlight">省 40 分鐘</div>
+          <div class="label">每日安衛文書二次登打</div>
+        </div>
+      </div>
+
+      <div class="card-grid-2" style="margin-top:16px;">
+        <div class="tech-card success">
+          <h4>📊 豐譽實測回饋（PPTX 官方答覆）</h4>
+          <ul>
+            <li><strong>前進漂移測試</strong>：於長走廊與大跨度區域前進，虛擬模型與實況精準對齊，無漂移狀況。</li>
+            <li><strong>上下樓層測試</strong>：手持設備經樓梯步行至 2FL，空間座標完美繼承，未失鎖。</li>
+            <li><strong>參數調整與階段選擇</strong>：現場可依需求動態切換施工階段與表單，彈性符合工況。</li>
+          </ul>
+        </div>
+        <div class="tech-card accent">
+          <h4>⏱️ 工時減負：打動第一線的核心誘因</h4>
+          <ul>
+            <li><strong>傳統模式</strong>：巡檢 30 分鐘 + 工務所整理相片、繕打報表 45 分鐘 = <strong>75 分鐘/天</strong>。</li>
+            <li><strong>BIM-AR 模式</strong>：現場邊走邊巡檢拍照，後台即時排版完成 = <strong>35 分鐘/天</strong>。</li>
+            <li><strong>減負效益</strong>：直接縮減 <strong>53%</strong> 巡檢工作量，真正讓安衛員願意天天開啟系統。</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 8: 施工架拆模拔桿未復原抓漏 (VIZ) -->
+    <section>
+      <h2>陸、施工架作業死角攻防：拆模拔桿秒級抓漏</h2>
+      <p style="font-size:0.55em; color:#8b949e; margin-top:-0.3em;">豐譽營造現場最切身痛點：模板與泥作工班擅自拆除拉桿未復原</p>
+
+      <div class="viz-container">
+        <!-- 現場拆除隱患 -->
+        <div class="viz-layer viz-before">
+          <div class="tag-before">現場真實隱患（肉眼極易漏檢）</div>
+          <h3 style="color:#ff7849; font-size:1.25em; margin-bottom:10px;">拆模物料傳遞 · 擅拆安全設施未復原</h3>
+          <ul style="line-height:1.8; font-size:0.95em;">
+            <li>⚠️ <strong>交叉拉桿拆除</strong>：工班為吊運模板方便拆卸斜撐，工後未回裝。</li>
+            <li>⚠️ <strong>壁連桿（繫牆桿）被拔</strong>：裝修打底便宜行事私自拆解壁連座。</li>
+            <li>⚠️ <strong>踏板缺損抽離</strong>：高空作業通道出現踩空致命陷阱。</li>
+            <li>⚠️ <strong>目視盲區</strong>：百米外鷹架密密麻麻，傳統巡檢根本看不出少了一根桿！</li>
+          </ul>
+        </div>
+
+        <!-- AR 虛實透視抓漏 -->
+        <div id="viz-after-2" class="viz-layer viz-after" style="clip-path:inset(0 50% 0 0);">
+          <div class="tag-after">BIM-AR 原位虛實套疊</div>
+          <h3 style="color:var(--accent2); font-size:1.25em; margin-bottom:10px;">虛實套疊對比 · 秒級抓出拔桿死角</h3>
+          <ul style="line-height:1.8; font-size:0.95em;">
+            <li>✅ <strong>法規原位投影</strong>：BIM 模型中標定「法定壁連桿與拉桿應設位置」。</li>
+            <li>✅ <strong>高亮警示抓漏</strong>：鏡頭掃向施工架，畫面上「虛擬有桿、實體空缺」即刻紅光警報。</li>
+            <li>✅ <strong>即時推播責任分包</strong>：拍照標註構件代號，系統推播模板/泥作主管 2 小時內回裝。</li>
+            <li>✅ <strong>閉環管理</strong>：工人完成復原後拍照回傳，安衛主管線上複核結案。</li>
+          </ul>
+        </div>
+
+        <div id="viz-divider-2" class="viz-divider"></div>
+      </div>
+
+      <input id="viz-slider-2" class="viz-slider" type="range" min="0" max="100" value="50" />
+    </section>
+
+    <!-- Slide 9: 專家即時投票 -->
+    <section id="slide-poll">
+      <h2>您認為 BIM-AR 最具推廣價值的方向？ <span class="live-badge">LIVE 即時投票</span></h2>
+      <p style="font-size:0.55em; color:#8b949e; margin-top:-0.3em;">請專家學者投票，共同指引營造安全數位轉型方向</p>
+
+      <div style="max-width:820px; margin:0.8em auto 0; text-align:left;">
+        <div id="poll-options" style="display:flex; flex-direction:column; gap:12px;">
+          <div class="poll-btn" data-opt="0" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px 20px; cursor:pointer; position:relative; overflow:hidden;">
+            <div class="poll-bar" style="position:absolute; inset:0; width:0%; background:rgba(79,195,247,0.18); transition:width 0.5s;"></div>
+            <div style="position:relative; display:flex; justify-content:space-between; align-items:center; font-size:0.7em;">
+              <span><strong>A. AI 影像瑕疵預判</strong>（自動辨識未戴安全帽、漏裝護欄）</span>
+              <span class="poll-count" style="font-weight:700; color:var(--accent2);">0 票</span>
+            </div>
+          </div>
+          <div class="poll-btn" data-opt="1" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px 20px; cursor:pointer; position:relative; overflow:hidden;">
+            <div class="poll-bar" style="position:absolute; inset:0; width:0%; background:rgba(232,100,58,0.18); transition:width 0.5s;"></div>
+            <div style="position:relative; display:flex; justify-content:space-between; align-items:center; font-size:0.7em;">
+              <span><strong>B. 移工多國語言互動教學</strong>（越語、印尼語危害預知互動卡）</span>
+              <span class="poll-count" style="font-weight:700; color:var(--accent);">0 票</span>
+            </div>
+          </div>
+          <div class="poll-btn" data-opt="2" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px 20px; cursor:pointer; position:relative; overflow:hidden;">
+            <div class="poll-bar" style="position:absolute; inset:0; width:0%; background:rgba(129,199,132,0.18); transition:width 0.5s;"></div>
+            <div style="position:relative; display:flex; justify-content:space-between; align-items:center; font-size:0.7em;">
+              <span><strong>C. 法定自檢表單一鍵自動化產出</strong>（全面免除現場紙本登打負擔）</span>
+              <span class="poll-count" style="font-weight:700; color:var(--success);">0 票</span>
+            </div>
+          </div>
+          <div class="poll-btn" data-opt="3" style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:10px; padding:14px 20px; cursor:pointer; position:relative; overflow:hidden;">
+            <div class="poll-bar" style="position:absolute; inset:0; width:0%; background:rgba(255,183,77,0.18); transition:width 0.5s;"></div>
+            <div style="position:relative; display:flex; justify-content:space-between; align-items:center; font-size:0.7em;">
+              <span><strong>D. 施工架與開口墜落高風險主動示警</strong>（跨樓層連續空間對位追蹤）</span>
+              <span class="poll-count" style="font-weight:700; color:var(--warn);">0 票</span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:14px; font-size:0.5em; color:#888; text-align:right;">
+          目前總投票數：<span id="poll-total" style="color:var(--accent2); font-weight:800; font-size:1.2em;">0</span> 票
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 10: QA 1 動態開口維護 -->
+    <section>
+      <h2>柒、專家質詢攻防（一）：施工動態開口變更</h2>
+      <div class="qa-box">
+        <div class="qa-q">
+          <span class="qa-q-tag">Q1 質詢焦點</span>
+          <span>建研所 王榮進所長：「營造現場天天拆模、天天有新開口，BIM 模型誰來維護？會不會反而增加工程師負擔？」</span>
+        </div>
+        <div class="qa-a">
+          <ol>
+            <li><span class="qa-highlight">主體結構與安衛防護「分層解耦」</span>：主體建築結構 BIM 保持固定，臨時性安衛元件（開口護欄、安全網）獨立分層，不強求現場每天重匯全棟 Revit。</li>
+            <li><span class="qa-highlight">現場輕量化一鍵標註工具</span>：安衛人員於現場巡查發現臨時新開口，在 APP 點選當層樓板，3 秒即可自訂標記虛擬防護線，<strong>無需 BIM 工程師每日改模</strong>。</li>
+            <li><span class="qa-highlight">施工階段參數 (Phase) 動態過濾</span>：依鋼筋、模板、粉刷工期過濾，換模與上傳時間壓低至 <strong>10~15 分鐘</strong>，完全符合現場節奏。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 11: QA 2 極端環境耐受 -->
+    <section>
+      <h2>柒、專家質詢攻防（二）：地下室斷訊與強光粉塵</h2>
+      <div class="qa-box">
+        <div class="qa-q">
+          <span class="qa-q-tag">Q2 質詢焦點</span>
+          <span>交通部公路局 林聰利副局長：「地下室 B2~B4 與電梯井常態斷訊，烈日強光反光看不清，系統會不會變成了工務所玩具？」</span>
+        </div>
+        <div class="qa-a">
+          <ol>
+            <li><span class="qa-highlight">全面落實 Offline-First 離線架構</span>：入工區前自動下載快取當層模型（≤15MB）；在地下室零格訊號下，AR 空間錨定、虛實透視、拍照與 SQLite 儲存 100% 正常，回工務所 Wi-Fi 背景佇列自動同步。</li>
+            <li><span class="qa-highlight">強固型 IP68 硬體設備規格</span>：指定採用亮度 <strong>≥ 1,000 nits</strong> 之工業三防平板/手機，杜絕烈日強光看不清；支援高耐摔與防手套誤觸模式。</li>
+            <li><span class="qa-highlight">屏科實中實證完全無漂移</span>：電箱輸入 0.65m 錨定後，於屏科實中現場行走推進及跨上 2FL，<strong>完全保持零漂移</strong>。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 12: QA 3 法規責任與成效量化 -->
+    <section>
+      <h2>柒、專家質詢攻防（三）：法規責任歸屬與成效驗證</h2>
+      <div class="qa-box">
+        <div class="qa-q">
+          <span class="qa-q-tag">Q3 質詢焦點</span>
+          <span>北科大 劉琦允教授：「若 AR 巡檢漏檢了缺失，法律責任歸誰？另外成效驗證以缺失統計是否客觀？」</span>
+        </div>
+        <div class="qa-a">
+          <ol>
+            <li><span class="qa-highlight">法律定位：輔助老手查驗，不替代法定專責人員簽署</span>：系統定位為第一線新進同仁的「防呆老手」與「危害培訓工具」，現場法定專任工程人員與安衛人員之法定義務不變，AR 紀錄作為改善佐證。</li>
+            <li><span class="qa-highlight">三重閉環科學量化成效</span>：
+              <ul>
+                <li><strong>防弊到訪率（客觀數據）</strong>：結合「空間座標錨定 + 停留時間計時（電箱停留≥30秒）」，確保 100% 走遍全場。</li>
+                <li><strong>工時減負（經濟效益）</strong>：每日現場直接省下 <strong>40 分鐘</strong>整理相片與排版時間。</li>
+                <li><strong>重複缺失下降率（縱向統計）</strong>：結案前比對導入前 vs 導入後「同工項重複缺失率」，客觀驗證改善效益。</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 13: QA 4 施工架死角抓漏 -->
+    <section>
+      <h2>柒、專家質詢攻防（四）：施工架拆模拔桿未復原抓漏</h2>
+      <div class="qa-box">
+        <div class="qa-q">
+          <span class="qa-q-tag">Q4 質詢焦點</span>
+          <span>勞研所 陳旺儀組長：「施工架墜落職災居高不下，工班因施工拆除拉桿未復原，AR 系統能提供什麼突破性解法？」</span>
+        </div>
+        <div class="qa-a">
+          <ol>
+            <li><span class="qa-highlight">BIM 預先標註法定標準位置</span>：模型中標記壁連桿（垂直≤5.5m/水平≤5.0m）、內外側交叉拉桿、滿鋪防滑踏板的原裝位置。</li>
+            <li><span class="qa-highlight">虛實透視投影「秒級抓漏」</span>：巡檢員手機鏡頭對準鷹架，虛擬紅線直接套疊現場鋼管；現場若被工班拔除未回裝，<strong>「虛擬有線、實況空缺」高亮警示</strong>，肉眼一眼即辨。</li>
+            <li><span class="qa-highlight">推播分包責任限期 2 小時復原</span>：拍照自動帶入柱位與責任包商，即時通知工班主管改善，打造閉環防護。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 14: QA 5 無BIM中小型工地推廣 -->
+    <section>
+      <h2>柒、專家質詢攻防（五）：80% 無 BIM 中小型工地推廣</h2>
+      <div class="qa-box">
+        <div class="qa-q">
+          <span class="qa-q-tag">Q5 質詢焦點</span>
+          <span>國土管理署 朱慶倫副署長：「大營造廠有專職 BIM 中心，但中小型建案完全無 BIM 預算，如何向全國普及推廣？」</span>
+        </div>
+        <div class="qa-a">
+          <ol>
+            <li><span class="qa-highlight">雙軌架構（Dual Track）彈性導入</span>：
+              <ul>
+                <li><strong>大型/公共工程</strong>：已有法定 BIM 編列預算，導入 1:1 完整數位孿生套疊。</li>
+                <li><strong>中小型建案</strong>：採用「<strong>免建模·通用安衛幾何空間模板</strong>」，現場安衛員只需輸入柱跨長度、層高、鷹架跨數，系統自動生成標準安全防護框，<strong>零 3D 門檻享有 AR 巡檢</strong>。</li>
+              </ul>
+            </li>
+            <li><span class="qa-highlight">SaaS 輕量化平台</span>：由政府/勞研所推動標準化雲端平台，中小型包商無需架設伺服器，直接下載 APK 即可享有表單自動化與危害影片教學。</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slide 15: 結語與展望 -->
+    <section data-background-image="images/cover.jpg" data-background-opacity="0.22" data-background-size="cover">
+      <div class="title-box">
+        <div class="badge">結語與展望 · 營造安全數位轉型</div>
+        <h1 style="color:var(--accent2); font-size:1.8em; margin-bottom:0.4em;">讓科技為第一線「防呆、省時、保平安」</h1>
+        <div class="card-grid-3" style="margin-top:1.2em;">
+          <div class="tech-card">
+            <h4>🛡️ 防呆老手</h4>
+            <p>將生硬的安衛法規現場可視化，讓新進同仁隨時有老手在身邊提示標準。</p>
+          </div>
+          <div class="tech-card accent">
+            <h4>⚡ 減負省時</h4>
+            <p>現場巡檢一鍵產出檢查表，每天幫工地省下 40 分鐘文書登打，換來全員主動使用。</p>
+          </div>
+          <div class="tech-card success">
+            <h4>🌐 全面普及</h4>
+            <p>公共工程引領示範，中小型工區空間量體化，攜手邁向零職災智慧營造。</p>
+          </div>
+        </div>
+        <p style="margin-top:2em; font-size:0.65em; color:#8b949e;">
+          感謝 勞動部勞研所、淡江大學研發團隊 與 各位長官專家指導<br>
+          <strong>豐譽營造股份有限公司 · 簡報完畢 敬請指教</strong>
+        </p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Reveal.js Core -->
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+  Reveal.initialize({
+    hash: true,
+    transition: 'slide',
+    transitionSpeed: 'default',
+    backgroundTransition: 'fade',
+    center: true,
+    progress: true,
+    controls: true,
+    slideNumber: 'c/t'
+  });
+
+  // === VIZ 1 滑桿控制 ===
+  const slider1 = document.getElementById('viz-slider-1');
+  const layer1 = document.getElementById('viz-after-1');
+  const div1 = document.getElementById('viz-divider-1');
+  if (slider1) {
+    slider1.addEventListener('input', function() {
+      const v = +this.value;
+      layer1.style.clipPath = `inset(0 ${100 - v}% 0 0)`;
+      div1.style.left = v + '%';
+    });
+  }
+
+  // === VIZ 2 滑桿控制 ===
+  const slider2 = document.getElementById('viz-slider-2');
+  const layer2 = document.getElementById('viz-after-2');
+  const div2 = document.getElementById('viz-divider-2');
+  if (slider2) {
+    slider2.addEventListener('input', function() {
+      const v = +this.value;
+      layer2.style.clipPath = `inset(0 ${100 - v}% 0 0)`;
+      div2.style.left = v + '%';
+    });
+  }
+</script>
+
+<!-- Firebase 互動元件 -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
+  import {
+    getFirestore, collection, addDoc, onSnapshot,
+    serverTimestamp, query, orderBy
+  } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAYQhNavPSce17XtvDC5xnXyl9iUhW9KjA",
+    authDomain: "teacherstudy-109ef.firebaseapp.com",
+    projectId: "teacherstudy-109ef",
+    storageBucket: "teacherstudy-109ef.firebasestorage.app",
+    messagingSenderId: "196599230156",
+    appId: "1:196599230156:web:cfe55d364df3ae1b9d5c69"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // 1. 文字雲集合：fengyu_wordcloud
+  const wcCol = collection(db, 'fengyu_wordcloud');
+  const wcInput = document.getElementById('wc-input');
+  const wcBtn = document.getElementById('wc-btn');
+  const wcList = document.getElementById('wc-list');
+  const wcCanvas = document.getElementById('wc-canvas');
+  const wcEmpty = document.getElementById('wc-empty');
+  const wcTotal = document.getElementById('wc-total');
+  const wcUnique = document.getElementById('wc-unique');
+
+  async function submitWord() {
+    const text = wcInput.value.trim();
+    if (!text) return;
+    wcBtn.disabled = true;
+    try {
+      await addDoc(wcCol, { text, timestamp: serverTimestamp() });
+      wcInput.value = '';
+    } catch (e) {
+      console.error(e);
+    }
+    wcBtn.disabled = false;
+  }
+
+  if (wcBtn) {
+    wcBtn.addEventListener('click', submitWord);
+    wcInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitWord(); });
+  }
+
+  // 監聽文字雲
+  onSnapshot(query(wcCol, orderBy('timestamp', 'desc')), snap => {
+    const counts = {};
+    let total = 0;
+    snap.forEach(doc => {
+      const t = doc.data().text?.trim();
+      if (t) {
+        counts[t] = (counts[t] || 0) + 1;
+        total++;
+      }
+    });
+
+    if (wcTotal) wcTotal.textContent = total;
+    const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    if (wcUnique) wcUnique.textContent = sorted.length;
+
+    if (wcList) {
+      wcList.innerHTML = sorted.slice(0, 8).map(([w, c], i) => `
+        <div style="display:flex; justify-content:space-between; margin-bottom:4px; padding:2px 6px; background:rgba(255,255,255,0.04); border-radius:4px;">
+          <span>${i + 1}. ${w}</span>
+          <span style="color:var(--accent); font-weight:700;">${c}</span>
+        </div>
+      `).join('');
+    }
+
+    if (sorted.length > 0) {
+      if (wcEmpty) wcEmpty.style.display = 'none';
+      if (window.WordCloud && wcCanvas) {
+        const factor = Math.max(16, Math.min(42, Math.floor(400 / Math.max(sorted[0][1], 1))));
+        const list = sorted.map(([w, c]) => [w, Math.max(14, Math.min(54, c * factor))]);
+        WordCloud(wcCanvas, {
+          list,
+          gridSize: 8,
+          weightFactor: 1,
+          fontFamily: 'Segoe UI, Noto Sans TC, sans-serif',
+          color: () => ['#4fc3f7', '#e8643a', '#81c784', '#ffb74d', '#ffffff'][Math.floor(Math.random() * 5)],
+          backgroundColor: 'transparent',
+          rotateRatio: 0.2
+        });
+      }
+    }
+  });
+
+  // 2. 投票集合：fengyu_poll
+  const pollCol = collection(db, 'fengyu_poll');
+  const pollBtns = document.querySelectorAll('.poll-btn');
+  const pollTotal = document.getElementById('poll-total');
+
+  pollBtns.forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const option = btn.dataset.opt;
+      try {
+        await addDoc(pollCol, { option: parseInt(option), timestamp: serverTimestamp() });
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  });
+
+  onSnapshot(pollCol, snap => {
+    const counts = [0, 0, 0, 0];
+    let total = 0;
+    snap.forEach(doc => {
+      const opt = doc.data().option;
+      if (typeof opt === 'number' && opt >= 0 && opt < 4) {
+        counts[opt]++;
+        total++;
+      }
+    });
+
+    if (pollTotal) pollTotal.textContent = total;
+    pollBtns.forEach((btn, idx) => {
+      const count = counts[idx];
+      const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+      const countSpan = btn.querySelector('.poll-count');
+      const bar = btn.querySelector('.poll-bar');
+      if (countSpan) countSpan.textContent = `${count} 票 (${pct}%)`;
+      if (bar) bar.style.width = pct + '%';
+    });
+  });
+</script>
+
+</body>
+</html>
